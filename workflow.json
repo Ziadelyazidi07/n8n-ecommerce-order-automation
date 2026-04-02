@@ -1,0 +1,282 @@
+{
+  "name": "Système Commandes E-commerce",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "commandes",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -400,
+        -64
+      ],
+      "id": "e55de288-d435-42ac-88f1-7a94ab543c81",
+      "name": "Webhook",
+      "webhookId": "8a4cbc53-8df2-431b-ba88-1e7af8d641c8"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "64366265-3bde-4ae3-aad4-4a378019254a",
+              "name": "date",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "cf520ae4-528a-46ba-b2cf-596d7cce2c44",
+              "name": "client",
+              "value": "={{ $json.body.client }}",
+              "type": "string"
+            },
+            {
+              "id": "d42f26b5-4333-4887-99f1-f5a9268a4cd0",
+              "name": "email",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            },
+            {
+              "id": "c7a33c20-bb6f-45ec-a576-cc043a40b596",
+              "name": "produit",
+              "value": "={{ $json.body.produit }}",
+              "type": "string"
+            },
+            {
+              "id": "3220440a-214d-438b-b325-3b230408a280",
+              "name": "quantite",
+              "value": "={{ $json.body.quantite }}",
+              "type": "string"
+            },
+            {
+              "id": "eb592817-152d-4b48-ae30-7ddbe5e156ed",
+              "name": "total",
+              "value": "={{ $json.body.total }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -192,
+        -64
+      ],
+      "id": "07cc9a69-2011-498d-ad4b-14bf4b6625c7",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1J4AfsSk6_I1SPCxJvRWaeftRW3xfKT-FIN3DpK90lGg",
+          "mode": "list",
+          "cachedResultName": "n8n projets",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1J4AfsSk6_I1SPCxJvRWaeftRW3xfKT-FIN3DpK90lGg/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Commandes",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1J4AfsSk6_I1SPCxJvRWaeftRW3xfKT-FIN3DpK90lGg/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "date": "={{ $json.date }}",
+            "client": "={{ $json.client }}",
+            "email": "={{ $json.email }}",
+            "produit": "={{ $json.produit }}",
+            "quantite": "={{ $json.quantite }}",
+            "total": "={{ $json.total }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "client",
+              "displayName": "client",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "produit",
+              "displayName": "produit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "quantite",
+              "displayName": "quantite",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "total",
+              "displayName": "total",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        16,
+        -64
+      ],
+      "id": "1a2d7c3d-079a-4fec-a6b0-d8ecd7d2754c",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "j3wHimjYrX3HoH6S",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "5186657264",
+        "text": "=🛒 NOUVELLE COMMANDE !  Client : {{ $('Edit Fields').item.json.client }} Produit : {{ $('Edit Fields').item.json.produit }} Quantité : {{ $('Edit Fields').item.json.quantite }} Total : {{ $('Edit Fields').item.json.total }} DH  📧 Email : {{ $('Edit Fields').item.json.email }} 🕐 Date : {{ $('Edit Fields').item.json.date }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        224,
+        -64
+      ],
+      "id": "486343b0-30d0-4d84-a1aa-db507bd0e5ff",
+      "name": "Send a text message",
+      "webhookId": "95c67a1b-caff-4f3c-bbdb-61c06401df58",
+      "credentials": {
+        "telegramApi": {
+          "id": "ieP01E2ksZOfP9WZ",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Edit Fields').item.json.email }}",
+        "subject": "=✅ Confirmation de votre commande - {{ $('Edit Fields').item.json.produit }}",
+        "message": "=Bonjour {{ $('Edit Fields').item.json.client }},  Merci pour votre commande ! 🎉  Voici le récapitulatif : - Produit : {{ $('Edit Fields').item.json.produit }} - Quantité : {{ $('Edit Fields').item.json.quantite }} - Total : {{ $('Edit Fields').item.json.total }} DH  Nous traitons votre commande et vous contacterons très bientôt.  Merci de votre confiance !",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        432,
+        -64
+      ],
+      "id": "45fbd372-3b0a-4884-883e-f8ece5d03b49",
+      "name": "Send a message",
+      "webhookId": "7dfca460-5538-4ac3-acb0-e8e007352a50",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "3svxjR6vWjwURhyj",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "118e2c9f-98d4-4d61-b9b2-11545182a9d6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b8254975fa9435c6ac988d206ba09626b706a53488574c99dc5ebdf46dc0b7f0"
+  },
+  "id": "gkgV16IuUt47AgNJ",
+  "tags": []
+}
